@@ -24,30 +24,30 @@ public class MainIsp {
 
             int machineChoisie = lireEntier(scanner);
 
-            Machine machine;
-            if (machineChoisie == 2) {
-                machine = new ImprimanteMultifonction();
-            } else {
-                machine = new ImprimanteSimple();
-            }
-
-            try {
-                executerFonction(machine, fonction);
-            } catch (UnsupportedOperationException e) {
-                System.out.println("Fonctionnalité non supportée par cette machine");
+            switch (machineChoisie) {
+                case 1:
+                    if (fonction == 1) {
+                        Imprimante imprimante = new ImprimanteSimple();
+                        imprimante.print();
+                    } else {
+                        System.out.println("Fonctionnalité non supportée par cette machine");
+                    }
+                    break;
+                case 2:
+                    ImprimanteMultifonction imprimanteMultifonction = new ImprimanteMultifonction();
+                    switch (fonction) {
+                        case 1: imprimanteMultifonction.print(); break;
+                        case 2: imprimanteMultifonction.scan(); break;
+                        case 3: imprimanteMultifonction.fax(); break;
+                        default: System.out.println("Fonction inconnue");
+                    }
+                    break;
+                default:
+                    System.out.println("Machine inconnue");
             }
         }
 
         scanner.close();
-    }
-
-    private static void executerFonction(Machine machine, int fonction) {
-        switch (fonction) {
-            case 1: machine.print(); break;
-            case 2: machine.scan(); break;
-            case 3: machine.fax(); break;
-            default: System.out.println("Fonction inconnue");
-        }
     }
 
     private static int lireEntier(Scanner scanner) {
