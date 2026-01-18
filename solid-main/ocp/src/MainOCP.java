@@ -4,7 +4,6 @@ public class MainOCP {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        CalculateurRemise calculateur = new CalculateurRemise();
 
         boolean quitter = false;
 
@@ -26,8 +25,13 @@ public class MainOCP {
             System.out.print("Montant HT : ");
             double montant = lireDouble(scanner);
 
-            double total = calculateur.calculerTotal(choix, montant);
-            System.out.println("Montant après remise : " + total);
+            try {
+                Remise remise = RemiseFactory.getRemise(choix);
+                double total = remise.calculer(montant);
+                System.out.println("Montant après remise : " + total);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
 
         scanner.close();
