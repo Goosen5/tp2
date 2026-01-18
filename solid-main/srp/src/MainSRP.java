@@ -1,11 +1,12 @@
+// Classe principale mise à jour
 import java.util.Scanner;
 
 public class MainSRP {
 
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
-        FacturationService service = new FacturationService();
+        DocumentService documentService = new DocumentService();
+        DocumentRepository documentRepository = new DocumentRepository();
 
         boolean quitter = false;
 
@@ -16,10 +17,10 @@ public class MainSRP {
 
             switch (choix) {
                 case 1:
-                    traiterDocument(scanner, service, true);
+                    traiterDocument(scanner, documentService, documentRepository, true);
                     break;
                 case 2:
-                    traiterDocument(scanner, service, false);
+                    traiterDocument(scanner, documentService, documentRepository, false);
                     break;
                 case 0:
                     quitter = true;
@@ -40,15 +41,19 @@ public class MainSRP {
         System.out.println("0. Quitter");
     }
 
-    private static void traiterDocument(Scanner scanner, FacturationService service, boolean facture) {
+    private static void traiterDocument(Scanner scanner, DocumentService service, DocumentRepository repository, boolean facture) {
         double montantHT = lireDoublePositif(scanner, "Montant HT : ");
 
         if (facture) {
             System.out.print("Nom du client : ");
             String client = scanner.nextLine().trim();
-            service.creerFacture(montantHT, client);
+            Document factureDoc = service.creerFacture(montantHT, client);
+            System.out.println(factureDoc);
+            repository.sauvegarderDocument(factureDoc);
         } else {
-            service.creerDevis(montantHT);
+            Document devisDoc = service.creerDevis(montantHT);
+            System.out.println(devisDoc);
+            repository.sauvegarderDocument(devisDoc);
         }
     }
 
