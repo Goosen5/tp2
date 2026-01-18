@@ -7,6 +7,11 @@ public class MainDip {
         Scanner scanner = new Scanner(System.in);
         NotificationService service = new NotificationService();
 
+        // Enregistrement des différents types de notifications
+        service.registerSender(1, new EmailSender());
+        service.registerSender(2, new SmsSender());
+        service.registerSender(3, new PushNotificationSender());
+
         while (true) {
             System.out.println("\n--- MENU ---");
             System.out.println("1. Envoyer un email");
